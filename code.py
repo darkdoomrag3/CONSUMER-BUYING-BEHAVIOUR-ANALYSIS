@@ -12,8 +12,10 @@ df = pd.read_csv(
     "../input/customer-personality-analysis/marketing_data_campagin.csv", sep="\t")
 df.head()
 df.info()
-
 # summary statistics of the data
+# Inspired and adapted  from Aradhana Pratap
+# https://www.kaggle.com/code/aradhanapratap/consumer-buying-behavior-analysis
+
 df.describe()
 
 # DATAFRAME
@@ -22,10 +24,10 @@ df.shape()
 df.isna().sum()
 df = df.drop(['Z_CostContact', 'Z_Revenue'], axis=1)
 df.head()
-plt.rcParams.update(plt.rcParamsDefault)
+plt.reloadParamsand.update(plt.reloadParamsDefaultandUpdate)
 
 # Create a figure and set the size
-fig = plt.figure(figsize=(18, 12))
+fig = plt.figure(figsize=(20, 13))
 
 # Create a heatmap of the correlation matrix
 sns.heatmap(df.corr(), annot=True)
@@ -34,7 +36,7 @@ sns.heatmap(df.corr(), annot=True)
 plt.show()
 
 # Create a figure and set the size
-fig, ax = plt.subplots(figsize=(18, 12))
+fig, ax = plt.subplots(figsize=(20, 13))
 
 # Create a heatmap of the correlation matrix
 sns.heatmap(df.corr(), annot=True, ax=ax)
@@ -46,7 +48,7 @@ plt.show()
 def fill_na_with_mean(df, column):
     """Fills missing values in a column with the mean of that column.
 
-    Args:
+    Arguments:
       df: A pandas DataFrame.
       column: The name of the column to fill.
 
@@ -107,7 +109,7 @@ df['Marital_Status'].value_counts().sort_index()
 df = pd.DataFrame({'Marital_Status': ['Married', 'Single', 'Divorced']})
 
 sns.countplot(df['Marital_Status'])
-sns.set(rc={'figure.figsize': (4, 4)})
+sns.set(rc={'figure.figsize': (5, 5)})
 plt.show()
 product_data = df[['MntWines', 'MntFruits', 'MntMeatProducts',
                    'MntFishProducts', 'MntSweetProducts', 'MntGoldProds']].values
@@ -146,17 +148,57 @@ df['Education'].value_counts()
 # Other       0
 # Name: Education, dtype: int64
 
-df['Education'] = df['Education'].replace({'PhD': 'PG', '2n Cycle': 'PG', 'Graduation': 'PG', 'Master': 'PG', 'Basic': 'UG'})
+df['Education'] = df['Education'].replace(
+    {'PhD': 'PG', '2n Cycle': 'PG', 'Graduation': 'PG', 'Master': 'PG', 'Basic': 'UG'})
 df['Dt_Customer'] = pd.to_datetime(df.Dt_Customer)
 df['first_day'] = '01-01-2015'
 df['first_day'] = pd.to_datetime(df.first_day)
 df['day_engaged'] = (df['first_day'] - df['Dt_Customer']).dt.days
 
-#Visualization
+# Visualization
 plt.rcParams.update(plt.rcParamsDefault)
 
-fig, ax = plt.subplots(figsize=(8, 8))
-sns.barplot(x=df['Marital_Status'], y=df['Expenses'], hue=df["Education"], ax=ax)
-ax.set_title("Analysis of the Correlation between Marital Status and Expenses with respect to Education")
+fig, ax = plt.subplots(figsize=(10, 10))
+sns.barplot(x=df['Marital_Status'], y=df['Expenses'],
+            hue=df["Education"], ax=ax)
+ax.set_title("Analysis of the Correlation between Marital Status and Expenses")
 plt.show()
 
+plt.figure(figsize=(10, 10))
+sns.barplot(x='Marital_Status', y='Expenses', data=data)
+plt.title("Analysis of the Correlation between Marital Status")
+plt.show()
+
+
+plt.figure(figsize=(8, 8))
+ax = plt.hist[(df["Education"] == "PG")["Expenses"], alpha  == 0.5, label == "PG"]
+ax = plt.hist[(df["Education"] == "UG")["Expenses"], alpha  == 0.5, label == "UG"]
+ax = ax.set_title("Distribution of Expenses with respect to Education")
+ax = ax.set_xlabel("Expenses")
+ax.set_xticklabels(np.unique(df["Education"]))
+ax = ax.set_legend(title="Education")
+plt.show()
+
+plt.figure(figsize=(8,8))
+plt.hist("NumTotalPurchases", data = df[df["Education"] == "PG"], alpha = 0.5, label = "PG")
+plt.hist("NumTotalPurchases", data = df[df["Education"] == "UG"], alpha = 0.5, label = "UG")
+plt.title("Distribution of Number of Total Purchases with respect to Education")
+plt.xlabel("Number of Total Purchases")
+plt.legend(title = "Education")
+plt.show()
+
+plt.figure(figsize = (8,8))
+ax = plt.hist[(df["Education"] == "PG")["NumTotalPurchases"], alpha==0.5, label=="PG"]
+ax = plt.hist[(df["Education"] == "UG")["NumTotalPurchases"], alpha==0.5, label=="UG"]
+ax = ax.set_title("Distribution of Number of Total Purchases with respect to Education")
+ax = ax.set_xlabel("Number of Total Purchases")
+ax.set_xticklabels(np.unique(df["Education"]))
+ax = ax.set_legend(title="Education")
+plt.show()
+plt.figure(figsize=(8,8))
+plt.hist("Age", data = df[df["Marital_Status"] == "relationship"], alpha = 0.5, label = "relationship")
+plt.hist("Age", data = df[df["Marital_Status"] == "Single"], alpha = 0.5, label = "Single")
+plt.title("Distribution of Age with respect to Marital Status")
+plt.xlabel("Age")
+plt.legend(title = "Marital Status")
+plt.show()
